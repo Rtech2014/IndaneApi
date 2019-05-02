@@ -82,11 +82,32 @@ namespace IndaneApi.Api
         [HttpPost]
         public async Task<ActionResult<Full>> PostFull(Full full)
         {
+            var count = 0;
+            var fullList = await _context.Fulls.Include(f => f.Product).Include(a => a.DeliveryPersonDetail).ToListAsync();
+            var prod = await _context.Products.Where(s => s.Id == full.ProductId).FirstOrDefaultAsync();
+            var del = await _context.DeliveryPersonDetails.Where(s => s.Id == full.DeliveryPersonId).FirstOrDefaultAsync();
+            var prodName = prod.Name;
+            var delName = del.Name;
+            foreach (var item in fullList)
+            {
+                if (item.DeliveryPersonDetail.Name == delName && item.Product.Name == prodName && item.Out_No == full.Out_No && item.TimeStamp.Date == DateTime.Now.Date)
+                {
+                    count += 1;
+                }
+            }
 
-            _context.Fulls.Add(full);
-            await _context.SaveChangesAsync();
+            if (count == 0)
+            {
+                full.TimeStamp = DateTime.Now;
+                _context.Add(full);
+                await _context.SaveChangesAsync();
+                return StatusCode(200, "Sucessfully added");
+            }
+            else
+            {
+                return StatusCode(500, "Internal server error");
+            }
 
-            return CreatedAtAction("GetFull", new { id = full.Id }, full);
         }
 
         // DELETE: api/Fulls/5

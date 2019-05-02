@@ -33,10 +33,10 @@
             <h3>Empty Cylinder</h3>
             <div class="form-row">
                 <div class="col">
-                    <select id="eproductid" class="form-control"></select>
+                    <select id="edeliveryboyid" class="form-control"></select>
                 </div>
                 <div class="col">
-                    <select id="edeliveryboyid" class="form-control"></select>
+                    <select id="eproductid" class="form-control"></select>
                 </div>
             </div>
             <br />
@@ -87,6 +87,7 @@
 
 <div class="container-fluid">
     <div class="row">
+        <a href="" class="btn btn-dark" id="refreshempty">Refresh</a>
         <div class="col-md-12" id="myComponentContainer">
             @await Component.InvokeAsync("EmptyList")
         </div>
@@ -143,7 +144,7 @@
                     success: function (result) {
                         console.log("suceeded " + result)
                         console.log("Hello");
-                        //AddData();
+                        alert(result);
                         var container = $("#myComponentContainer");
                         var refreshComponent = function () {
                             console.log('hello')
@@ -152,19 +153,44 @@
                             console.log(data);
                         };
                         refreshComponent();
+                        clearDataEmpty();
+                    },
+                    error: function (response) {
+                        alert("Please check the cash recevied or wrong entry ");
                     }
                 })
             });
+            $('#refreshempty').click(function () {
+                var container = $("#myComponentContainer");
+                var refreshComponent = function () {
+                    console.log('hello')
+                    $.get("/Home/MyEmptyComponent", function (data) { container.html(data); });
+                    var data = $.get("/Home/MyEmptyComponent", function (data) { container.html(data); });
+                    console.log(data);
+                };
+                refreshComponent();
+            });
+            function clearDataEmpty() {
+                 $("#in_No").val("");
+                 $("#emptyNo").val("");
+                 $("#newConnection").val("");
+                 $("#emptyPending").val("");
+                 $("#returnedFull").val("");
+                $("#cashRecevied").val("");
+            }
+
+            function clearDataFull() {
+                console.log("Hello Empty boy")
+                $("#FullCount").val(""); 
+                $("#OutNo").val(""); 
+            }
 
             $('#cylinderfull').click(function () {
-                console.log("Entered");
                 var deliveryboy = $("#deliveryboyid").val();
-                console.log(deliveryboy)
                 var productId = $("#productid").val();
                 var fullCount = $("#FullCount").val();
                 var outNo = $("#OutNo").val();
                 var cashBal = $("#Cashbal").val();
-
 
                 $.ajax({
                     type: "POST",
@@ -183,20 +209,21 @@
                         }),
                     contentType: "appliction/json",
                     success: function (result) {
-            
                         //AddData();
+                        alert(result);
                         var fcontainer = $("#myfullComponentContainer");
                         var fullrefreshComponent = function () {
                             $.get("/Home/MyFullComponent", function (data) { fcontainer.html(data); });
                             var data = $.get("/Home/MyFullComponent", function (data) { fcontainer.html(data); });
-                            console.log(data);
                         };
                         fullrefreshComponent();
+                        clearDataFull();
+                    },
+                    error: function (result) {
+                        alert("Please Enter correct values or entry exists");
                     }
-                    
                 })
             });
-
 
 
             GetDeliveryboyData();

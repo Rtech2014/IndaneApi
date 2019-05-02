@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -24,6 +25,8 @@ namespace IndaneApi.Models
         public double ReturnedFull { get; set; }
         public double CashToBeRecevied { get; set; }
         public double CashRecevied { get; set; }
+
+        [Display(Name = "Balance")]
         public double ReceviedBalance { get; set; }
 
         public int FullId { get; set; }
