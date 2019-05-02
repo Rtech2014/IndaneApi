@@ -13,6 +13,8 @@ using Microsoft.EntityFrameworkCore;
 using IndaneApi.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using IndaneApi.Models;
 
 namespace IndaneApi
 {
@@ -40,6 +42,7 @@ namespace IndaneApi
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddIdentity<ApplicationUser,IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

@@ -15,139 +15,166 @@
               crossorigin="anonymous"
               integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" />
     </environment>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
 </head>
 <body>
-    @if (User.IsInRole("Staff") || User.IsInRole("Admin"))
-    {
-        <nav class="navbar navbar-dark sticky-top bg-primary flex-md-nowrap p-0">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="/">Senthur Azhagar Gas</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Dashboard <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-action="Index" asp-controller="DeliveryPersonDetails">Delivery Guys</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-action="Index" asp-controller="Products">Products</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-action="Index" asp-controller="Loadings">Loadings</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Reports
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" asp-action="Index" asp-controller="Fulls">Full Cylinders</a>
+                        <a class="dropdown-item" asp-action="Index" asp-controller="Empties">Cyclinder for Refills</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" asp-action="CurrentStock" asp-controller="Home">Cylinder Current Stock Report</a>
+                        <a class="dropdown-item" asp-action="StartStock" asp-controller="Home">Cylinder Opening Stock Report</a>
+                        <a class="dropdown-item" asp-action="OtherProductCurrentStock" asp-controller="Home">Cylinder Opening Stock Report</a>
+                        <a class="dropdown-item" asp-action="OtherProductStartStock" asp-controller="Home">Product Current Stock Report</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-action="Index" asp-controller="OtherProductLoads">Other Product Loads</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-action="Index" asp-controller="OtherProductSales">Other Products Sales</a>
+                </li>
+
+                <li class="nav-item">
+                    <partial name="_LoginPartial" />
+                </li>
+            </ul>
+        </div>
+    </nav>
+    @*<nav class="navbar navbar-dark sticky-top bg-primary flex-md-nowrap p-0">
             <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">
                 Senthur Azhagar Gas  | @User.Identity.Name
             </a>
             <input class="form-control form-control-light w-100" type="text" placeholder="Search" aria-label="Search">
             <ul class="navbar-nav px-3">
-                <partial name="_LoginPartial" />
             </ul>
-        </nav>
-        <div class="container-fluid">
+        </nav>*@
+    @*<div class="container-fluid">
             <div class="row">
-                @if (User.IsInRole("Admin"))
-                {
-                    <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-                        <div class="sidebar-sticky">
-                            <ul class="nav flex-column">
-                                <li class="nav-item">
-                                    <a class="nav-link active" href="/">
-                                        <span data-feather="home"></span>
-                                        Dashboard <span class="sr-only">(current)</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-action="Index" asp-controller="DeliveryPersonDetails">
-                                        <span data-feather="file"></span>
-                                        Delivery Guys
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-action="Index" asp-controller="Products">
-                                        <span data-feather="shopping-cart"></span>
-                                        Products
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-action="Index" asp-controller="Loadings">
-                                        <span data-feather="users"></span>
-                                        Loads
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-action="Index" asp-controller="OtherProductLoads">
-                                        <span data-feather="bar-chart-2"></span>
-                                        Other Product Loads
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-action="Index" asp-controller="OtherProductSales">
-                                        <span data-feather="layers"></span>
-                                        Other Product Sales
-                                    </a>
-                                </li>
-                            </ul>
 
-                            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-                                <span>Reports</span>
-                                <a class="d-flex align-items-center text-muted" href="#">
-                                    <span data-feather="plus-circle"></span>
+                <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+                    <div class="sidebar-sticky">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="/">
+                                    <span data-feather="home"></span>
+                                    Dashboard <span class="sr-only">(current)</span>
                                 </a>
-                            </h6>
-                            <ul class="nav flex-column mb-2">
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-action="Index" asp-controller="Fulls">
-                                        <span data-feather="file-text"></span>
-                                        Full Cylinders
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-action="Index" asp-controller="Empties">
-                                        <span data-feather="file-text"></span>
-                                        Cylinders for Refill
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-action="CurrentStock" asp-controller="Home">
-                                        <span data-feather="file-text"></span>
-                                        Cylinder Current Stock Report
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-action="StartStock" asp-controller="Home">
-                                        <span data-feather="file-text"></span>
-                                        Cylinder Opening Stock Report
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-action="OtherProductCurrentStock" asp-controller="Home">
-                                        <span data-feather="file-text"></span>
-                                        Product Current Stock Report
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-action="OtherProductStartStock" asp-controller="Home">
-                                        <span data-feather="file-text"></span>
-                                        Product Opening Stock Report
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </nav>
-                }
-            </div>
-        </div>
-    }
-    @if (User.IsInRole("Admin"))
-    {
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-            @RenderBody()
-            <footer class="border-top footer text-muted">
-                <div class="container">
-                    &copy; 2019 - IndaneApi - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                </div>
-            </footer>
-        </main>
-    }
-   else 
-    {
-        <main role="main" class="col-md-12 ml-sm-auto col-lg-12 pt-3 px-4">
-            @RenderBody()
-            <footer class="border-top footer text-muted">
-                <div class="container">
-                    &copy; 2019 - IndaneApi - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                </div>
-            </footer>
-        </main>
-    }
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-action="Index" asp-controller="DeliveryPersonDetails">
+                                    <span data-feather="file"></span>
+                                    Delivery Guys
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-action="Index" asp-controller="Products">
+                                    <span data-feather="shopping-cart"></span>
+                                    Products
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-action="Index" asp-controller="Loadings">
+                                    <span data-feather="users"></span>
+                                    Loads
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-action="Index" asp-controller="OtherProductLoads">
+                                    <span data-feather="bar-chart-2"></span>
+                                    Other Product Loads
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-action="Index" asp-controller="OtherProductSales">
+                                    <span data-feather="layers"></span>
+                                    Other Product Sales
+                                </a>
+                            </li>
+                        </ul>
 
+                        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                            <span>Reports</span>
+                            <a class="d-flex align-items-center text-muted" href="#">
+                                <span data-feather="plus-circle"></span>
+                            </a>
+                        </h6>
+                        <ul class="nav flex-column mb-2">
+                            <li class="nav-item">
+                                <a class="nav-link" asp-action="Index" asp-controller="Fulls">
+                                    <span data-feather="file-text"></span>
+                                    Full Cylinders
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-action="Index" asp-controller="Empties">
+                                    <span data-feather="file-text"></span>
+                                    Cylinders for Refill
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-action="CurrentStock" asp-controller="Home">
+                                    <span data-feather="file-text"></span>
+                                    Cylinder Current Stock Report
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-action="StartStock" asp-controller="Home">
+                                    <span data-feather="file-text"></span>
+                                    Cylinder Opening Stock Report
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-action="OtherProductCurrentStock" asp-controller="Home">
+                                    <span data-feather="file-text"></span>
+                                    Product Current Stock Report
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-action="OtherProductStartStock" asp-controller="Home">
+                                    <span data-feather="file-text"></span>
+                                    Product Opening Stock Report
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>*@
+    <main role="main" class="container col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+        @RenderBody()
+        <footer class="border-top footer text-muted">
+            <div class="container">
+                &copy; 2019 - IndaneApi - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div>
+        </footer>
+    </main>
 
 
     <environment include="Development">
@@ -168,6 +195,7 @@
                 integrity="sha256-E/V4cWE4qvAeO5MOhjtGtqDzPndRO1LBk8lJ/PR7CA4=">
         </script>
     </environment>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
     @RenderSection("Scripts", required: false)
